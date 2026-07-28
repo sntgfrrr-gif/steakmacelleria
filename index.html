@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STEAK Macelleria</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #c0392b;
+    --gold: #c9a84c;
+    --dark: #0d0d0d;
+    --card: #161616;
+    --border: #2a2a2a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--dark);
+    color: #e8e2d9;
+    overflow-x: hidden;
+  }
+
+  /* ─── HERO ─── */
+  header {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: url('https://i.imgur.com/sskJpY8.jpeg') center/cover no-repeat;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(13,13,13,0.85) 100%);
+  }
+  .hero-inner {
+    position: relative;
+    z-index: 2;
+    animation: fadeUp 1s ease forwards;
+  }
+  .hero-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s ease forwards;
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    font-weight: 900;
+    line-height: 1;
+    color: #fff;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s ease forwards;
+  }
+  header h1 span { color: var(--gold); }
+  .hero-sub {
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: #ccc;
+    margin-top: 16px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s ease forwards;
+  }
+  .hero-cta {
+    margin-top: 36px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s ease forwards;
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 32px;
+    background: var(--gold);
+    color: #000;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: filter 0.2s;
+  }
+  .btn-primary:hover { filter: brightness(1.1); }
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 32px;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+  }
+  .btn-outline:hover { background: var(--gold); color: #000; }
+
+  /* scroll indicator */
+  .scroll-hint {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    opacity: 0;
+    animation: fadeUp 0.8s 1.2s ease forwards;
+  }
+  .scroll-hint span {
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #888;
+  }
+  .scroll-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+    animation: bounce 1.4s infinite;
+  }
+
+  /* ─── STATS BAR ─── */
+  .stats-bar {
+    background: var(--red);
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0;
+  }
+  .stat {
+    padding: 14px 48px;
+    text-align: center;
+    border-right: 1px solid rgba(255,255,255,0.2);
+    flex: 1;
+    min-width: 180px;
+  }
+  .stat:last-child { border-right: none; }
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+    display: block;
+  }
+  .stat-label {
+    font-size: 0.78rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.75);
+  }
+
+  /* ─── SECTIONS ─── */
+  section {
+    padding: 90px 24px;
+    max-width: 1100px;
+    margin: auto;
+  }
+
+  .section-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 24px;
+    line-height: 1.2;
+  }
+
+  /* ─── ABOUT / PROPRIETARIO ─── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+  .about-text p {
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: #b0a89e;
+    line-height: 1.8;
+    margin-bottom: 16px;
+  }
+  .about-text .highlight {
+    color: var(--gold);
+    font-weight: 500;
+    font-style: italic;
+  }
+  .about-images {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .about-images img {
+    width: 100%;
+    border-radius: 6px;
+    object-fit: cover;
+    aspect-ratio: 3/4;
+    transition: transform 0.4s;
+  }
+  .about-images img:hover { transform: scale(1.03); }
+  .about-images img:first-child {
+    margin-top: 40px;
+  }
+
+  /* ─── VALORI ─── */
+  .values-full {
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .values-full section {
+    padding: 80px 24px;
+  }
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 32px;
+    margin-top: 40px;
+  }
+  .value-card {
+    padding: 32px 24px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .value-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-4px);
+  }
+  .value-icon {
+    font-size: 2rem;
+    margin-bottom: 16px;
+    display: block;
+  }
+  .value-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  .value-card p {
+    font-size: 0.9rem;
+    color: #888;
+    line-height: 1.7;
+  }
+
+  /* ─── PRODUCTS ─── */
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 24px;
+    margin-top: 40px;
+  }
+  .product-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .product-card:hover {
+    border-color: var(--red);
+    transform: translateY(-6px);
+  }
+  .product-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+  }
+  .product-body {
+    padding: 20px;
+  }
+  .product-body h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+  .product-body p {
+    font-size: 0.85rem;
+    color: #777;
+    line-height: 1.6;
+  }
+  .product-tag {
+    display: inline-block;
+    margin-top: 12px;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    padding: 3px 10px;
+    border-radius: 3px;
+  }
+
+  /* ─── ORARI ─── */
+  .orari-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+    margin-top: 40px;
+  }
+  .orari-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .orari-table tr {
+    border-bottom: 1px solid var(--border);
+  }
+  .orari-table tr:last-child { border-bottom: none; }
+  .orari-table td {
+    padding: 14px 0;
+    font-size: 0.95rem;
+    color: #b0a89e;
+  }
+  .orari-table td:last-child {
+    text-align: right;
+    color: #fff;
+    font-weight: 500;
+  }
+  .chiuso {
+    color: var(--red) !important;
+  }
+  .info-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 32px;
+  }
+  .info-box h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+  .info-line {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 14px;
+    font-size: 0.95rem;
+    color: #b0a89e;
+  }
+  .info-line .icon { font-size: 1.1rem; flex-shrink: 0; }
+
+  /* ─── GALLERY ─── */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto auto;
+    gap: 12px;
+    margin-top: 40px;
+  }
+  .gallery-grid img {
+    width: 100%;
+    border-radius: 6px;
+    object-fit: cover;
+    height: 200px;
+    transition: transform 0.4s, filter 0.4s;
+    filter: brightness(0.85);
+  }
+  .gallery-grid img:hover { transform: scale(1.02); filter: brightness(1); }
+  .gallery-grid img:first-child {
+    grid-column: span 2;
+    height: 320px;
+  }
+
+  /* ─── CTA BAND ─── */
+  .cta-band {
+    background: linear-gradient(135deg, #1a0a0a 0%, #2d0b0b 100%);
+    border-top: 1px solid #3a1010;
+    border-bottom: 1px solid #3a1010;
+    text-align: center;
+    padding: 80px 24px;
+  }
+  .cta-band h2 { margin-bottom: 12px; }
+  .cta-band p {
+    font-size: 1rem;
+    color: #999;
+    margin-bottom: 32px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: #000;
+    padding: 50px 24px 30px;
+    text-align: center;
+    border-top: 1px solid var(--border);
+  }
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+  footer p {
+    font-size: 0.85rem;
+    color: #555;
+    margin-top: 8px;
+  }
+  .footer-divider {
+    width: 40px;
+    height: 1px;
+    background: var(--border);
+    margin: 20px auto;
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(6px); }
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    .about-grid { grid-template-columns: 1fr; }
+    .about-images { order: -1; }
+    .about-images img:first-child { margin-top: 0; }
+    .orari-grid { grid-template-columns: 1fr; }
+    .gallery-grid { grid-template-columns: 1fr 1fr; }
+    .gallery-grid img:first-child { grid-column: span 2; height: 220px; }
+    .stat { padding: 20px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header>
+  <div class="hero-inner">
+    <p class="hero-label">Quartu Sant'Elena · Dal 2010</p>
+    <h1>STEAK<br><span>Macelleria</span></h1>
+    <p class="hero-sub">Selezione, freschezza e passione — ogni giorno</p>
+    <div class="hero-cta">
+      <a class="btn-primary" href="#prodotti">Scopri i prodotti</a>
+      <a class="btn-outline" href="#dove-siamo">Dove trovarci</a>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>Scorri</span>
+    <div class="scroll-dot"></div>
+  </div>
+</header>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat">
+    <span class="stat-number">15+</span>
+    <span class="stat-label">Anni di esperienza</span>
+  </div>
+  <div class="stat">
+    <span class="stat-number">100%</span>
+    <span class="stat-label">Prodotti freschi</span>
+  </div>
+</div>
+
+<!-- PROPRIETARIO -->
+<section>
+  <div class="about-grid">
+    <div class="about-text">
+      <span class="section-tag">Il proprietario</span>
+      <h2>La passione di Claudio Farris</h2>
+      <p>
+        STEAK Macelleria nasce dalla dedizione di <strong>Claudio Farris</strong>,
+        macellaio con oltre quindici anni di esperienza nella selezione e lavorazione
+        delle carni migliori.
+      </p>
+      <p>
+        Ogni taglio viene scelto con cura, ogni prodotto preparato con la stessa
+        attenzione artigianale di sempre. Il rapporto diretto con il cliente è al
+        centro del suo lavoro quotidiano.
+      </p>
+      <p class="highlight">
+        "La qualità non è un optional — è il minimo che i miei clienti meritano."
+      </p>
+    </div>
+    <div class="about-images">
+      <img src="https://i.imgur.com/VoybJ96.jpeg" alt="STEAK Macelleria">
+      <img src="https://i.imgur.com/xVjLzqX.jpeg" alt="STEAK Macelleria">
+    </div>
+  </div>
+</section>
+
+<!-- VALORI -->
+<div class="values-full">
+  <section>
+    <span class="section-tag">I nostri valori</span>
+    <h2>Perché sceglierci</h2>
+    <div class="values-grid">
+      <div class="value-card">
+        <span class="value-icon">🐄</span>
+        <h3>Origine garantita</h3>
+        <p>Selezioniamo animali da fornitori locali e filiere controllate, per una tracciabilità completa.</p>
+      </div>
+      <div class="value-card">
+        <span class="value-icon">🔪</span>
+        <h3>Lavorazione artigianale</h3>
+        <p>Ogni taglio è preparato a mano, con la tecnica tramandata da generazioni di macellai esperti.</p>
+      </div>
+      <div class="value-card">
+        <span class="value-icon">❄️</span>
+        <h3>Freschezza ogni giorno</h3>
+        <p>La carne arriva fresca ogni mattina. Niente prodotti precotti o congelati — solo fresco.</p>
+      </div>
+      <div class="value-card">
+        <span class="value-icon">💬</span>
+        <h3>Consiglio personalizzato</h3>
+        <p>Ti aiutiamo a scegliere il taglio giusto per ogni ricetta e ogni occasione, sempre con un sorriso.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- PRODOTTI -->
+<section id="prodotti">
+  <span class="section-tag">La nostra selezione</span>
+  <h2>I nostri prodotti</h2>
+  <div class="products-grid">
+    <div class="product-card">
+      <img src="https://i.imgur.com/uT0hy5c.jpeg" alt="STEAK Macelleria prodotto">
+    </div>
+    <div class="product-card">
+      <img src="https://i.imgur.com/olSkuM5.jpeg" alt="STEAK Macelleria prodotto">
+    </div>
+    <div class="product-card">
+      <img src="https://i.imgur.com/5ROzLub.jpeg" alt="STEAK Macelleria prodotto">
+    </div>
+    <div class="product-card">
+      <img src="https://i.imgur.com/sbL64sS.jpeg" alt="STEAK Macelleria prodotto">
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section>
+  <span class="section-tag">Galleria</span>
+  <h2>Dalla nostra macelleria</h2>
+  <div class="gallery-grid">
+    <img src="https://i.imgur.com/tWxPqzf.jpeg" alt="STEAK Macelleria">
+    <img src="https://i.imgur.com/3K5dIHP.jpeg" alt="STEAK Macelleria">
+    <img src="https://i.imgur.com/0zb8NTp.jpeg" alt="STEAK Macelleria">
+    <img src="https://i.imgur.com/EHzGZFh.jpeg" alt="STEAK Macelleria">
+    <img src="https://i.imgur.com/QwFKoaL.jpeg" alt="STEAK Macelleria">
+  </div>
+</section>
+
+<!-- ORARI & DOVE SIAMO -->
+<section id="dove-siamo">
+  <div class="orari-grid">
+    <div>
+      <span class="section-tag">Orari</span>
+      <h2>Quando trovarci</h2>
+      <table class="orari-table">
+        <tr><td>Martedì – Venerdì</td><td>08:00 – 13:00 / 16:00 – 20:00</td></tr>
+        <tr><td>Sabato</td><td>08:00 – 14:00</td></tr>
+        <tr><td>Domenica e Lunedì</td><td class="chiuso">Chiuso</td></tr>
+      </table>
+    </div>
+    <div class="info-box">
+      <h3>📍 Dove siamo</h3>
+      <div class="info-line">
+        <span class="icon">📌</span>
+        <span>Via Tazzoli 25, Quartu Sant'Elena (CA)</span>
+      </div>
+      <div class="info-line">
+        <span class="icon">📞</span>
+        <span>344 6812609</span>
+      </div>
+      <div class="info-line">
+        <span class="icon">📷</span>
+        <span>Instagram: STEAK macelleria</span>
+      </div>
+      <a class="btn-primary" style="margin-top:20px;" href="tel:+393446812609">
+        📞 Chiamaci ora
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<div class="cta-band">
+  <span class="section-tag">Contattaci</span>
+  <h2>Hai un evento speciale?</h2>
+  <p>Prepariamo vassoi, grigliate e ordini su misura per feste, barbecue e ricorrenze. Contattaci con anticipo!</p>
+  <a class="btn-primary" href="tel:+393446812609">
+    📞 Chiamaci per un preventivo
+  </a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">🥩 STEAK Macelleria</div>
+  <div class="footer-divider"></div>
+  <p>Via Tazzoli 25 · Quartu Sant'Elena (CA)</p>
+  <p style="margin-top:4px;">© 2026 STEAK Macelleria · Tutti i diritti riservati</p>
+</footer>
+
+</body>
+</html>
